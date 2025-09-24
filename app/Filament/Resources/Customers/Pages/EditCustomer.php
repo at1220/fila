@@ -7,10 +7,8 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
-use Filament\Panel;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
-
 
 class EditCustomer extends EditRecord
 {
@@ -25,20 +23,27 @@ class EditCustomer extends EditRecord
             RestoreAction::make(),
         ];
     }
+
     // format du lieu truoc khi fill
-    protected function mutateFormDataBeforeFill(array $data): array{
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
         $data['name'] == 'Tuaans' ? $data['name'] = 'Ddungs' : $data['name'];
+
         return $data;
     }
-    //format du lieu truoc khi luu
-    protected function mutateFormDataBeforeSave(array $data): array{
-        $data['name'] == 'Ddungs' ? $data['name'] = 'Tuaans' : $data['name'];
+
+    // format du lieu truoc khi luu
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
         return $data;
     }
+
     // custome lưu
-    protected function handleRecordUpdate(Model $record, array $data): Model{
-       // $data['name'] = $record->name . ' đã thay đổi thành '. $data['name'];
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        // $data['name'] = $record->name . ' đã thay đổi thành '. $data['name'];
         $record->update($data);
+
         return $record;
     }
     //

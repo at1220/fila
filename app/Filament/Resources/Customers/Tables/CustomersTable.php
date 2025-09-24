@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Customers\Tables;
 
+use App\Models\User;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -29,6 +30,28 @@ class CustomersTable
                 TextColumn::make('user.email')
                     ->label('Email đăng nhập')
                     ->searchable(),
+                TextColumn::make('caredByNames')
+                    ->label('NV quản lí')
+                    ->listWithLineBreaks()
+                    ->searchable(query: function ($query, string $search) {
+                        // Lấy list id user có tên giống từ khóa
+                        $userIds = User::where('name', 'like', "%{$search}%")
+                            ->pluck('id')
+                            ->toArray();
+
+                        if (! empty($userIds)) {
+                            $query->orWhere(function ($q) use ($userIds) {
+                                foreach ($userIds as $id) {
+                                    $q->orWhereJsonContains('cared_by', $id);
+                                }
+                            });
+                        }
+
+                        // Ngoài ra search thêm trong quan hệ user chính
+                        $query->orWhereHas('user', function ($q) use ($search) {
+                            $q->where('name', 'like', "%{$search}%");
+                        });
+                    }),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
