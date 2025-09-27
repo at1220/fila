@@ -21,6 +21,7 @@ class Customer extends Model implements Auditable
         'password',
         'user_id',
         'cared_by',
+        'long_text',
     ];
 
     protected $casts = [

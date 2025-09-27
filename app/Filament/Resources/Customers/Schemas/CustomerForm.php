@@ -3,13 +3,13 @@
 namespace App\Filament\Resources\Customers\Schemas;
 
 use App\Filament\Resources\Customers\Pages\CreateCustomer;
-use App\Models\Sale;
 use App\Models\User;
 use Filament\Actions\Action;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -22,7 +22,7 @@ class CustomerForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
+                TextInput::make('name')  ->label('Tên khách hàng')
                     ->required(),
                 TextInput::make('phone')
                     ->tel()
@@ -141,52 +141,23 @@ class CustomerForm
                             })
                             ->visible($operation === 'edit'),
                     ]),
+                // RichEditor::make('long_text')
+                //     ->label('Nội dung')
+                //     ->toolbarButtons([
+                //         'bold',
+                //         'italic',
+                //         'underline',
+                //         'strike',
+                //         'link',
+                //         'bulletList',
+                //         'orderedList',
+                //     ])
+                //     ->columnSpanFull(),
+                MarkdownEditor::make('long_text')
+                    ->label('Ghi chú')
+                    ->columnSpanFull()
+                    ->required(),
 
-                // Section::make('Tạo nhân viên')
-                //     ->schema([
-                //         TextInput::make('name_staff')
-                //             ->label('Tên nhân viên')
-                //             ->visibleOn(Operation::Create)
-                //             ->required(),
-                //         TextInput::make('phone_staff')
-                //             ->label('SĐT nhân viên')
-                //             ->visibleOn(Operation::Create)
-                //             ->tel()
-                //             ->required(),
-                //         TextInput::make('address_staff')
-                //             ->label('Địa chỉ')
-                //             ->visibleOn(Operation::Create)
-                //             ->required(),
-                //         Select::make('type_staff')
-                //             ->options([
-                //                 'office' => 'Chính thức',
-                //                 'probationary' => 'Thử việc',
-                //                 'intern' => 'Thực tập sinh',
-                //             ])
-                //             ->label('Loại nhân viên')
-                //             ->visibleOn(Operation::Create)
-                //             ->required(),
-                //     ])->visibleOn(Operation::Create)
-                //     ->footerActions([
-                //         fn (string $operation): Action => Action::make('save')
-                //             ->action(function (Section $component, CreateRecord $livewire) {
-                //                 $state = $component->getState();
-                //                 Sale::create([
-                //                     'name' => $state['name_staff'],
-                //                     'phone' => $state['phone_staff'],
-                //                     'address' => $state['address_staff'],
-                //                     'type' => $state['type_staff'],
-                //                 ]);
-
-                //                 Notification::make()
-                //                     ->title('Tạo mới nhân viên thành công')
-                //                     ->success()
-                //                     ->send();
-
-                //                 $component->saveRelationships();
-                //             })
-                //             ->visible($operation === 'create'),
-                //     ]),
             ]);
     }
 }

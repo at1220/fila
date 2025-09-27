@@ -18,16 +18,18 @@ class ListSales extends ListRecords
             CreateAction::make(),
         ];
     }
-    // public function getTabs():array{
-    //     return [
-    //         'address full' => Tab::make()->modifyQueryUsing(fn(Builder $query)
-    //         =>$query->whereNotNull('address'))
-    //         ->icon('heroicon-s-arrow-up-right'),
-    //         'type null' => Tab::make()->modifyQueryUsing(fn(Builder $query)
-    //         =>$query->where('type','')),
-    //     ];
-    // }
-    // public function getDefaultActiveTab(): int|string|null{
-    //     return 'type null';
-    // }
+
+    public function getTabs(): array
+    {
+        return [
+            'address full' => Tab::make()->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('address'))
+                ->icon('heroicon-s-arrow-up-right')->label('Có địa chỉ'),
+            'type null' => Tab::make()->modifyQueryUsing(fn (Builder $query) => $query->where('type', '')),
+        ];
+    }
+
+    public function getDefaultActiveTab(): int|string|null
+    {
+        return 'address full';
+    }
 }

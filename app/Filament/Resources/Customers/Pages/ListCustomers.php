@@ -3,14 +3,10 @@
 namespace App\Filament\Resources\Customers\Pages;
 
 use App\Filament\Resources\Customers\CustomerResource;
-use App\Models\Customer;
-use App\Models\User;
 use Filament\Actions\CreateAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\ListRecords;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Validation\ValidationException;
+use Filament\Schemas\Components\Tabs\Tab;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListCustomers extends ListRecords
 {
@@ -21,5 +17,19 @@ class ListCustomers extends ListRecords
         return [
             CreateAction::make()->modalHeading('Tạo khách hàng mới'),
         ];
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make()
+                ->icon('heroicon-s-arrow-up-right')->label('Tất cả'),
+            'has_account' => Tab::make()->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('user_id'))->label('Có tài khoản'),
+        ];
+    }
+
+    public function getDefaultActiveTab(): int|string|null
+    {
+        return 'all';
     }
 }
